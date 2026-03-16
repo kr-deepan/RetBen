@@ -111,11 +111,12 @@ def generate_report(data: ReportRequest):
     risk = case.get('risk_score')
     risk_str = f"{(risk * 100):.1f}%" if risk else 'N/A'
     
-    severity = case.get("prediction", "Pending")
+    severity = case.get("prediction") or "Pending"
+    triage = case.get("triage") or "N/A"
     
     metrics_data = [
         ["Diagnosis Priority:", "AI Assessment:"],
-        [case.get("triage", "N/A").upper(), severity.upper()],
+        [triage.upper(), severity.upper()],
         ["Confidence Score:", f"Risk Score:"],
         [conf_str, risk_str]
     ]

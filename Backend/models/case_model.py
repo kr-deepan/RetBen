@@ -22,6 +22,7 @@ def update_prediction(case_id, prediction_data):
             "risk_score": prediction_data.get("risk_score"),
             "heatmap_path": prediction_data.get("heatmap_path"),
             "inference_time_ms": prediction_data.get("inference_time_ms"),
+            "clinical_reasoning": prediction_data.get("clinical_reasoning"),
             "status": "In Progress"
         }}
     )
