@@ -1,0 +1,8 @@
+fastapi
+uvicorn
+python-multipart
+pydantic
+sqlite-utils
+PyJWT
+requests
+reportlab
