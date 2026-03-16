@@ -10,6 +10,7 @@ from models.efficientnet_model import load_model
 from inference.predict import predict_image
 from explainability.gradcam import generate_gradcam
 from triage.triage_logic import get_triage
+from inference.reasoning import generate_clinical_reasoning
 
 app = FastAPI(title="DR Screening API", description="Diabetic Retinopathy Screening Pipeline")
 
@@ -77,6 +78,16 @@ async def predict_dr(file: UploadFile = File(...)):
         # Phase 6: GradCAM
         heatmap_path = generate_gradcam(file_location, MODEL, target_class=dr_grade, output_dir=OUTPUT_DIR, device=DEVICE)
         
+        # Phase 11: Clinical Reasoning
+        clinical_reasoning = generate_clinical_reasoning(
+            severity=severity,
+            dr_grade=dr_grade,
+            confidence=confidence,
+            risk_score=triage_result["risk_score"],
+            triage=triage_result["triage"],
+            inference_time_ms=round((time.time() - start_time) * 1000, 2)
+        )
+        
         # Format response to match requirements exactly
         response = {
             "dr_grade": dr_grade,
@@ -85,7 +96,8 @@ async def predict_dr(file: UploadFile = File(...)):
             "risk_score": triage_result["risk_score"],
             "triage": triage_result["triage"],
             "heatmap_path": heatmap_path.replace("\\", "/"),
-            "inference_time_ms": round((time.time() - start_time) * 1000, 2)
+            "inference_time_ms": round((time.time() - start_time) * 1000, 2),
+            "clinical_reasoning": clinical_reasoning
         }
         
         return response

@@ -32,5 +32,6 @@ def predict(data: PredictRequest):
         "triage": result.get("triage"),
         "risk_score": result.get("risk_score"),
         "heatmap_path": result.get("heatmap_path"),
-        "inference_time_ms": result.get("inference_time_ms")
+        "inference_time_ms": result.get("inference_time_ms"),
+        "clinical_reasoning": result.get("clinical_reasoning")
     }

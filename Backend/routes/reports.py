@@ -199,6 +199,16 @@ def generate_report(data: ReportRequest):
     else:
         content.append(Paragraph("<i>No imaging available for this report.</i>", normal_style))
 
+    # Clinical Reasoning Section
+    clinical_reasoning = case.get("clinical_reasoning")
+    if clinical_reasoning:
+        content.append(Spacer(1, 0.3 * inch))
+        content.append(Paragraph("Clinical Reasoning", section_style))
+        for paragraph in clinical_reasoning.split("\n\n"):
+            if paragraph.strip():
+                content.append(Paragraph(paragraph, normal_style))
+                content.append(Spacer(1, 0.1 * inch))
+
     # Footer
     content.append(Spacer(1, 0.5 * inch))
     content.append(Paragraph("<font size=8 color='#94a3b8'>This report was generated automatically by the AI screening system. Clinical decisions should always be verified by a qualified ophthalmologist.</font>", ParagraphStyle('footer', alignment=1)))
